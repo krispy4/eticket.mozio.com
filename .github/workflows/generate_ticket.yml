@@ -1,0 +1,27 @@
+name: Generate GO Transit Ticket
+
+on:
+  workflow_dispatch:   # manual trigger — the "Run workflow" button
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run ticket generator
+        env:
+          GITHUB_TOKEN_SECRET: ${{ secrets.GH_TOKEN }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+        run: python3 send_ticket.py
