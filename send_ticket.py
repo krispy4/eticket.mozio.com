@@ -157,6 +157,7 @@ def send_email(html_body: str, order_number: str) -> bool:
 # ─────────────────────────────────────────────
 
 def main():
+    print(f"DEBUG: GH_PAT env var = '{os.environ.get('GH_PAT', 'NOT SET')[:6]}...'")
     print(f"DEBUG: GITHUB_TOKEN present = {bool(GITHUB_TOKEN and 'YOUR' not in GITHUB_TOKEN)}")
     print(f"DEBUG: GMAIL_APP_PASS present = {bool(GMAIL_APP_PASS and 'YOUR' not in GMAIL_APP_PASS)}")
     print(f"DEBUG: GMAIL_ADDRESS = {GMAIL_ADDRESS}")

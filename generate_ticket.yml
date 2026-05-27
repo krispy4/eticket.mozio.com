@@ -1,7 +1,7 @@
 name: Generate GO Transit Ticket
 
 on:
-  workflow_dispatch:   # manual trigger — the "Run workflow" button
+  workflow_dispatch:
 
 jobs:
   generate:
@@ -23,8 +23,8 @@ jobs:
         run: ls -la
 
       - name: Run ticket generator
-        env:
-          GH_PAT: ${{ secrets.GH_TOKEN }}
-          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
-          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
-        run: python3 send_ticket.py
+        run: |
+          export GH_PAT="${{ secrets.GH_TOKEN }}"
+          export GMAIL_APP_PASS="${{ secrets.GMAIL_APP_PASS }}"
+          export GMAIL_ADDRESS="${{ secrets.GMAIL_ADDRESS }}"
+          python3 send_ticket.py
