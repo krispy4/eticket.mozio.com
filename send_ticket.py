@@ -27,7 +27,7 @@ import requests
 #  When running locally: fill in the fallback values below.
 # ─────────────────────────────────────────────
 
-GITHUB_TOKEN   = os.environ.get("GITHUB_TOKEN_SECRET", "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN")
+GITHUB_TOKEN   = os.environ.get("GH_PAT", "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN")
 GITHUB_USER    = "krispy4"
 GITHUB_REPO    = "eticket.mozio.com"
 
