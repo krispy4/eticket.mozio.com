@@ -157,10 +157,9 @@ def send_email(html_body: str, order_number: str) -> bool:
 # ─────────────────────────────────────────────
 
 def main():
-    if "YOUR_GITHUB" in GITHUB_TOKEN or "YOUR_GMAIL" in GMAIL_APP_PASS:
-        print("ERROR: Secrets not configured. Add GH_TOKEN, GMAIL_APP_PASS, and GMAIL_ADDRESS as repo secrets.")
-        sys.exit(1)
-
+    print(f"DEBUG: GITHUB_TOKEN present = {bool(GITHUB_TOKEN and 'YOUR' not in GITHUB_TOKEN)}")
+    print(f"DEBUG: GMAIL_APP_PASS present = {bool(GMAIL_APP_PASS and 'YOUR' not in GMAIL_APP_PASS)}")
+    print(f"DEBUG: GMAIL_ADDRESS = {GMAIL_ADDRESS}")
     now      = datetime.now()
     valid_to = now + timedelta(days=7)
     order_no = f"{fmt_order_date(now)}-{random_suffix(8)}"
