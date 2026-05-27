@@ -22,9 +22,16 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run ticket generator
+      - name: Debug secrets
+        env:
+          TEST_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          export GH_PAT="${{ secrets.GITHUB_TOKEN }}"
-          export GMAIL_APP_PASS="${{ secrets.GMAIL_APP_PASS }}"
-          export GMAIL_ADDRESS="${{ secrets.GMAIL_ADDRESS }}"
-          python3 send_ticket.py
+          echo "Token length: ${#TEST_TOKEN}"
+          echo "First 4 chars: ${TEST_TOKEN:0:4}"
+
+      - name: Run ticket generator
+        env:
+          GH_PAT: ${{ secrets.GH_TOKEN }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+        run: python3 send_ticket.py
