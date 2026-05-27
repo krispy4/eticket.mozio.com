@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>GO Transit Ticket</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f0f0f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
+
+  .phone-frame {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #c2185b;
+    padding: 18px 20px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .go-logo {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* GO logo: two overlapping circles */
+  .go-logo svg {
+    width: 48px;
+    height: 32px;
+  }
+
+  .header-title {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── ROUTE BANNER ── */
+  .route-banner {
+    background: #c2185b;
+    padding: 0 20px 18px;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+  }
+
+  .route-banner::after {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    background: #c2185b;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    border: 3px solid white;
+  }
+
+  /* ── TICKET BODY ── */
+  .ticket-body {
+    padding: 28px 20px 20px;
+    background: white;
+  }
+
+  .passenger-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1.5px dashed #ddd;
+    margin-bottom: 20px;
+  }
+
+  .passenger-info {
+    text-align: center;
+  }
+
+  .passenger-count {
+    font-size: 40px;
+    font-weight: 300;
+    color: #222;
+    line-height: 1;
+  }
+
+  .passenger-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #222;
+    margin-top: 4px;
+  }
+
+  .passenger-type {
+    font-size: 12px;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  .train-icon {
+    color: #888;
+    font-size: 28px;
+  }
+
+  .direction-info {
+    text-align: center;
+  }
+
+  .arrow {
+    font-size: 28px;
+    color: #222;
+  }
+
+  .direction-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #222;
+    margin-top: 4px;
+  }
+
+  /* ── TICKET NUMBER ── */
+  .ticket-number-row {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .ticket-number-row span {
+    font-size: 14px;
+    color: #222;
+  }
+
+  .ticket-number-row strong {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  /* ── BARCODE ── */
+  .barcode-container {
+    position: relative;
+    margin: 8px 0 16px;
+    height: 72px;
+    overflow: hidden;
+  }
+
+  .barcode-svg {
+    width: 100%;
+    height: 72px;
+  }
+
+  .active-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #c2185b;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    background: rgba(255,255,255,0.85);
+    padding: 2px 10px;
+  }
+
+  /* ── TIME INFO ── */
+  .time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+
+  .time-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #222;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .time-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+  }
+
+  .time-grid > div:nth-child(2),
+  .time-grid > div:nth-child(4) {
+    text-align: right;
+  }
+
+  /* ── BOTTOM SECTION ── */
+  .bottom-section {
+    background: #c2185b;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .show-proof {
+    color: white;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .countdown {
+    color: white;
+    font-size: 52px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-title">GO TRANSIT</span>
+    <!-- GO Logo SVG -->
+    <svg viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="go-logo">
+      <circle cx="16" cy="16" r="14" fill="white" fill-opacity="0.9"/>
+      <circle cx="32" cy="16" r="14" fill="white" fill-opacity="0.9"/>
+      <circle cx="16" cy="16" r="14" fill="none" stroke="#c2185b" stroke-width="0"/>
+      <!-- Left half circle mask -->
+      <path d="M16 2 A14 14 0 0 0 16 30 A14 14 0 0 1 16 2Z" fill="#c2185b" fill-opacity="0.15"/>
+    </svg>
+    <span class="header-title">GO TRANSIT</span>
+  </div>
+
+  <!-- ROUTE BANNER -->
+  <div class="route-banner">
+    Union Station GO to Bronte GO
+  </div>
+
+  <!-- TICKET BODY -->
+  <div class="ticket-body">
+
+    <!-- Passenger / Direction row -->
+    <div class="passenger-row">
+      <div class="passenger-info">
+        <div class="passenger-count">x1</div>
+        <div class="passenger-label">Passenger(s)</div>
+        <div class="passenger-type">1x Adult</div>
+      </div>
+
+      <div style="color:#888; font-size:28px;">🚋</div>
+
+      <div class="direction-info">
+        <div class="arrow">→</div>
+        <div class="direction-label">One-Way</div>
+      </div>
+    </div>
+
+    <!-- Ticket number -->
+    <div class="ticket-number-row">
+      <span>Ticket Number: <strong>MZ66801593</strong></span>
+    </div>
+
+    <!-- Barcode -->
+    <div class="barcode-container">
+      <svg class="barcode-svg" viewBox="0 0 300 72" xmlns="http://www.w3.org/2000/svg">
+        <!-- Generated barcode bars -->
+        <rect x="0" y="0" width="3" height="72" fill="#888"/>
+        <rect x="5" y="0" width="1" height="72" fill="#888"/>
+        <rect x="8" y="0" width="4" height="72" fill="#888"/>
+        <rect x="14" y="0" width="2" height="72" fill="#888"/>
+        <rect x="18" y="0" width="1" height="72" fill="#888"/>
+        <rect x="21" y="0" width="3" height="72" fill="#888"/>
+        <rect x="26" y="0" width="2" height="72" fill="#888"/>
+        <rect x="30" y="0" width="1" height="72" fill="#888"/>
+        <rect x="33" y="0" width="4" height="72" fill="#888"/>
+        <rect x="39" y="0" width="1" height="72" fill="#888"/>
+        <rect x="42" y="0" width="3" height="72" fill="#888"/>
+        <rect x="47" y="0" width="2" height="72" fill="#888"/>
+        <rect x="51" y="0" width="1" height="72" fill="#888"/>
+        <rect x="54" y="0" width="2" height="72" fill="#888"/>
+        <rect x="58" y="0" width="4" height="72" fill="#888"/>
+        <rect x="64" y="0" width="1" height="72" fill="#888"/>
+        <rect x="67" y="0" width="3" height="72" fill="#888"/>
+        <rect x="72" y="0" width="2" height="72" fill="#888"/>
+        <rect x="76" y="0" width="1" height="72" fill="#888"/>
+        <rect x="79" y="0" width="4" height="72" fill="#888"/>
+        <!-- gap for ACTIVE text center -->
+        <rect x="86" y="0" width="2" height="72" fill="#888"/>
+        <rect x="90" y="0" width="1" height="72" fill="#888"/>
+        <rect x="93" y="0" width="3" height="72" fill="#888"/>
+        <!-- white gap for ACTIVE label -->
+        <rect x="98" y="0" width="104" height="72" fill="white"/>
+        <!-- right side bars -->
+        <rect x="204" y="0" width="3" height="72" fill="#888"/>
+        <rect x="209" y="0" width="1" height="72" fill="#888"/>
+        <rect x="212" y="0" width="4" height="72" fill="#888"/>
+        <rect x="218" y="0" width="2" height="72" fill="#888"/>
+        <rect x="222" y="0" width="1" height="72" fill="#888"/>
+        <rect x="225" y="0" width="3" height="72" fill="#888"/>
+        <rect x="230" y="0" width="2" height="72" fill="#888"/>
+        <rect x="234" y="0" width="1" height="72" fill="#888"/>
+        <rect x="237" y="0" width="4" height="72" fill="#888"/>
+        <rect x="243" y="0" width="1" height="72" fill="#888"/>
+        <rect x="246" y="0" width="3" height="72" fill="#888"/>
+        <rect x="251" y="0" width="2" height="72" fill="#888"/>
+        <rect x="255" y="0" width="1" height="72" fill="#888"/>
+        <rect x="258" y="0" width="2" height="72" fill="#888"/>
+        <rect x="262" y="0" width="4" height="72" fill="#888"/>
+        <rect x="268" y="0" width="1" height="72" fill="#888"/>
+        <rect x="271" y="0" width="3" height="72" fill="#888"/>
+        <rect x="276" y="0" width="2" height="72" fill="#888"/>
+        <rect x="280" y="0" width="1" height="72" fill="#888"/>
+        <rect x="283" y="0" width="4" height="72" fill="#888"/>
+        <rect x="289" y="0" width="2" height="72" fill="#888"/>
+        <rect x="293" y="0" width="1" height="72" fill="#888"/>
+        <rect x="296" y="0" width="3" height="72" fill="#888"/>
+        <!-- ACTIVE text -->
+        <text x="150" y="44" text-anchor="middle" fill="#c2185b" font-size="18" font-weight="700" letter-spacing="3" font-family="-apple-system, sans-serif">ACTIVE</text>
+      </svg>
+    </div>
+
+    <!-- Time grid -->
+    <div class="time-grid">
+      <div class="time-label">CURRENT DATE &amp; TIME:</div>
+      <div class="time-label" style="text-align:right">TIME SINCE ACTIVATION:</div>
+      <div class="time-value" id="current-time">—</div>
+      <div class="time-value" style="text-align:right" id="since-activation">—</div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom-section">
+    <div class="show-proof">
+      Please show proof of your ticket to the<br>
+      Customer Protective Officers when<br>
+      asked
+    </div>
+    <div class="countdown" id="countdown">04:00:00</div>
+  </div>
+
+</div>
+
+<script>
+  // Activation time: set to NOW when the page first loads
+  // (In production, the Python script will bake in the actual activation timestamp)
+  const ACTIVATION_TIME = new Date();
+  const EXPIRY_DURATION = 4 * 60 * 60 * 1000; // 4 hours in ms
+
+  function pad(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  function formatDateTime(d) {
+    const months = ['Jan','Feb','Mar','Apr','May','Jun',
+                    'Jul','Aug','Sep','Oct','Nov','Dec'];
+    const month = months[d.getMonth()];
+    const day = d.getDate();
+    const year = d.getFullYear();
+    let hours = d.getHours();
+    const mins = pad(d.getMinutes());
+    const secs = pad(d.getSeconds());
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    return `${month} ${day}, ${year} ${pad(hours)}:${mins}:${secs} ${ampm}`;
+  }
+
+  function tick() {
+    const now = new Date();
+
+    // Current date & time
+    document.getElementById('current-time').textContent = formatDateTime(now);
+
+    // Time since activation
+    const elapsed = now - ACTIVATION_TIME;
+    const elH = Math.floor(elapsed / 3600000);
+    const elM = Math.floor((elapsed % 3600000) / 60000);
+    const elS = Math.floor((elapsed % 60000) / 1000);
+    document.getElementById('since-activation').textContent =
+      `${pad(elH)}:${pad(elM)}:${pad(elS)}`;
+
+    // Countdown (4h from activation)
+    const remaining = EXPIRY_DURATION - elapsed;
+    if (remaining <= 0) {
+      document.getElementById('countdown').textContent = '00:00:00';
+    } else {
+      const remH = Math.floor(remaining / 3600000);
+      const remM = Math.floor((remaining % 3600000) / 60000);
+      const remS = Math.floor((remaining % 60000) / 1000);
+      document.getElementById('countdown').textContent =
+        `${pad(remH)}:${pad(remM)}:${pad(remS)}`;
+    }
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
