@@ -24,7 +24,7 @@ jobs:
 
       - name: Run ticket generator
         env:
-          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
         run: python3 send_ticket.py
