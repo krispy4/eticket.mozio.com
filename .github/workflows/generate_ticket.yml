@@ -1,7 +1,10 @@
 name: Generate GO Transit Ticket
 
 on:
-  workflow_dispatch:   # manual trigger — the "Run workflow" button
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   generate:
@@ -19,9 +22,18 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run ticket generator
+      - name: Generate ticket and email
         env:
-          GITHUB_TOKEN_SECRET: ${{ secrets.GH_TOKEN }}
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          ROUTE: "Union Station GO to Bronte GO"
+          INCREMENT: "300"
         run: python3 send_ticket.py
+
+      - name: Commit updated state and ticket page
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add index.html ticket_state.json
+          git commit -m "Regular ticket - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes"
+          git push
