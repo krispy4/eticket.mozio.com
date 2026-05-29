@@ -24,7 +24,7 @@
 
   /* ── HEADER ── */
   .header {
-    background-color: #5a6e1f;
+    background-color: #4e7520;
     padding: 18px 28px;
   }
 
@@ -117,17 +117,18 @@
   }
 
   .ticket-badge::before {
-    content: '🎫';
-    font-size: 11px;
+    content: '⊟';
+    font-size: 13px;
   }
 
   .adult-badge {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
+    background: white;
+    border: 1px solid #ccc;
     border-radius: 4px;
     padding: 4px 10px;
     font-size: 12px;
     color: #444;
+    font-weight: 400;
   }
 
   .ticket-route {
@@ -156,7 +157,6 @@
     font-size: 14px;
     color: #222;
     padding-top: 10px;
-    border-top: 1px solid #eee;
   }
 
   .ticket-oneway-row .qty {
@@ -178,13 +178,13 @@
   }
 
   .view-btn {
-    background-color: #5a6e1f;
+    background-color: #4e7520;
     color: white;
     text-decoration: none;
     padding: 8px 20px;
     border-radius: 4px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     display: inline-block;
   }
 
@@ -224,7 +224,7 @@
   }
 
   .survey-btn {
-    background-color: #5a6e1f;
+    background-color: #4e7520;
     color: white;
     text-decoration: none;
     padding: 10px 16px;
@@ -341,7 +341,7 @@
 
   /* ── FOOTER ── */
   .footer {
-    background-color: #5a6e1f;
+    background-color: #4e7520;
     padding: 28px 36px;
   }
 
@@ -393,15 +393,7 @@
 
   <!-- HEADER -->
   <div class="header">
-    <!-- GO Logo: two overlapping circles in white -->
-    <svg width="48" height="32" viewBox="0 0 52 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Left circle -->
-      <circle cx="17" cy="17" r="15" fill="white"/>
-      <!-- Right circle -->
-      <circle cx="35" cy="17" r="15" fill="white"/>
-      <!-- Overlap blend - slightly transparent center -->
-      <ellipse cx="26" cy="17" rx="8" ry="15" fill="#5a6e1f" fill-opacity="0.25"/>
-    </svg>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAoCAYAAABpYH0BAAAJOElEQVR42s1ba2gc1xU+5947M7sryZJiKZIVOTixMXHBYLuottumBJrQNg7GJG1DWgIltDb4X3Fr+nBruy19UsifuChNU4ihbVZOC/lhWpwiipPYjR2HVqbBUmUJWUq0eng82tXuzNzH6Q/fEdtFdvTePXBhuHtn7jffed179wzCAoSIGAAAIhoAgHPnzq3fuXPnZxzH+Sxj7OOc8/uFEPcODQ0d2LBhw1Oe5z0jpRwlooEoii4WCoU3Nm3adAEAyD5PAIBGRIIVECJCAOCIqGwXHxsb25NOpx91HGcvIj6EiPcyxtJ2vCQin4iua62vhGH49+Hh4X/s3r17er73XS44nlyPjIx05fP535RKpVEqE6UUERFdu3ZtX7FY/F15HxFRGIa6WCxenp6e/taFCxfaKhWzHMlms3P4rl692u77/tFisfheGIamEqOUkuI4/j9siZRKpdEgCLpHRka65nv3JWk1ecFr165tC4KgR0o5N2EURSaKIhVFkY6iSFYSGEVRbH9T5feVSqWJqamp7x8/fjwFANDb2yuWijG5t7u7O3Pz5s1jpVJpKplHSkll+Ewcx1TeLH5tx8yRHccxBUGQ7evr25Yo2Vr4osibs4zx8fEjURQV7MNNFEWyElAURWoeAmXFmDmiiYiKxeJ7AwMDnyxz6cViFAAAg4ODDxeLxX8TERljyOLTlYR9VLOEyjiOjfWawsTExDeT+Y4fP84WRd4rr7xSFwRBNjH/MAzVXSb/SAIrgSZWOj4+fnCx7pKMzeVyh5O551PsUlsYhipxc9/3X+3u7s4sKOQkLF++fLkxn8+/tVBgiyGw/B4ppSEimpiYOLZQS0zG5HK5k9ZVdRRFaiWIu5OigyA4f+7cuUZEvLMlJjEvm82m8/n8m4mFLHCyRRNoNW3iOJZERB9++OHRjyIx+W1ycvI7NqSsmNXd5d1iIqJbt26dP3v2rFcZE8vBckRUvu//vr6+/lNxHEtEdGAVhTGGRMSVUqq9vf0XIyMjA4j4FyLiiKgr3RYR1ejo6JdaWlp+JqVUtg9XEyMiOnEcy8bGxk/v2bPnZUT8qlWkAgBg5eByudzhpqamp6WUq05eGUA0xjBjjGltbX356tWr9wOAKY839tq8//77m9avX/+S1toQEVtt8spJlFLK5ubmr3zwwQeHEFElcZiVg2tsbPylMUYbYwSsoSAiU0qZVCrVdN99971gF9hYwTO1t7efSqVS65RShIhsLTEaY4TW2txzzz2/6uvr25gomSXg2trafup5Xp1SihhjCGssiCiklLqpqemJsbGxxxBRExFP3PnGjRuPNzU1fSGOY80Y42uNjzGGWmvjeV5DZ2fnTxIlM0TU/f39H6urq3taKWUAYM3BlbkqAABlMpmTSZdt2NDQ8MNkK1hF4UopU1dX98zg4OBWRNQMAKC1tfWQ67rMGGPWKq7cwQq5UooaGhr2Xr9+fTciGkQ0w8PDexsaGnZLKQkReRXxoTHGOI7jNDc3HwQAYL29vfVCiCet9lmVNQzGGMM5h8bGxmeTvnXr1j3LGCMiMlB9YUQErus+9frrr2fEli1bHs5kMp3VCMx3AggA4Lru57PZLPd9nzmO8zmbVKqOzyY8SqVSm3bt2rVXZDKZxxhjoJQy1XSPSoCe5z3Y1dW1USklUqnUAzWkYCAiwznnmUzmUSGESI5vEGpEiEg7jiM8z3uorq6OCSFASqkrFv5V1TMAAOf8E4Jz/uBKEsgY03aVrmxcXYooAADHcR6wXqGISEHtCAGAYYxtEkTUqrWGFcq+RETNACBc112OtQgAACHEQ/Z6uc9bFamvr39QCCGcZVhKErcIAMDzvHQQBC8qpS5IKZUxhi3Rio3jOKxUKl3RWnMhxEAURaYWksjcgpBziKKIGNSgGHN7tZJKpUwZqbUIFYRSSjqOsywrTI53oigqtbW1HUylUl9cCXBxHJ9CRKivrz8MNSoCACY55x1aa1qBOIiI6AOAiuNYLSNrKhvzAinl+Ao8b8WTiOu6mM/nbwhjzHUA6Ej2nCvgfjx5UUQUS7RoAADBGBNKqf8CgLC6rQkC7Y6IGWOGmdb6nbLUXGvi5nK5f9lVAq8hXAQAoJR6h83Ozr5hjIFaWeVXSHrnzp1jpVLphhACa2QvDIjItNYQhuEb7N13332zWCyO1hLAMldxAQCklH9LFq+14L5CCAzDcPjKlStvswMHDuSVUn+2McbUmAUaAIBCoXDanrTVgpcYRIQ4jl/bv39/kQEATE5OdsdxbJg9M6o1Ao8cOfJWPp//p+M4SES6itZHjDEmpZS+77+YnG3xrVu3/md2dvZVIQQDAF1jVgg9PT06n8//yC6TqglFCyHY7OzsHzdv3txPRJxZYjGXy30viqJZIQQaY2oqIxORu3HjxrO+7//VcRxujFlzJRtjiHPOwjDMj46OHrObB2K2hItt27ZtOAiCo4wxzhhTtWaFRIQjIyOHwzCcqUbCY4wpzjnzff/b27dvvwEADBFNUgeniUi0tbWdunnzZo/d2skai4Vsx44dQ9PT01/nnDNENGsVr4lIOo7j+L7/h46Oju7e3l6R/PFfntU0EbEzZ858LZ/Pv+26bk2RmCi5s7OzZ2pq6ruO4wjbR6tNnuu6ThAEb168ePE5ImKPPPLIXAhh5UdSJ06cgEOHDhX7+/sfLxQKCYmqVjKzrQgQra2tP5+YmPix4zjCLhz0KhBHRKRc13UKhcL5S5cuPbFv377oxIkTcNfK2tUub1tgQY+0xUO/tZhEBcY1K28LguBP2Ww2Xc5N5WlMpZaTupNZAPjy+Pj4kebm5pOe59XZSlMNtwuRsMruzBHx1ODgYN+GDRteSKfT24kIpJTKBni2WIuD23Xb3PM8HkXR7K1bt461tLQ8D3C79G++mml2B4AmKXdrb2//9fDwcNfMzMwZRETXdYXrumhNXNtsSNUgsbe3V2zevPn86dOn9/i+/4MoiqYtPoaIkOCbLwRZ/MaOIdd10R6h4czMTM/AwEBXS0vL80k528mTJ81SY8GSiszjOJZSSlpKS2oG7+TC5VLtInNcIIl3/cwBEe93XffeoaGhAx0dHU+m0+nn4jhWyzgPVK7rijiOX8pkMt8gIlH2CcO8a0RY4GcOiAjGmBX7zOF/J4V/uVFHM2IAAAAASUVORK5CYII=" alt="GO Transit" height="40" style="display:block;">
   </div>
 
   <!-- MAIN CONTENT -->
@@ -432,7 +424,7 @@
         </div>
       </div>
       <div class="ticket-card-bottom">
-        <span class="ticket-number">MZ66801593</span>
+        <span class="ticket-number">{TICKET_NUMBER}</span>
         <a href="{TICKET_URL}" class="view-btn">View</a>
       </div>
     </div>
@@ -492,11 +484,7 @@
   <div class="footer">
     <!-- GO Logo white -->
     <div class="footer-logo">
-      <svg width="48" height="32" viewBox="0 0 52 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="17" cy="17" r="15" fill="white" fill-opacity="0.9"/>
-        <circle cx="35" cy="17" r="15" fill="white" fill-opacity="0.9"/>
-        <ellipse cx="26" cy="17" rx="8" ry="15" fill="#5a6e1f" fill-opacity="0.4"/>
-      </svg>
+      <img src="data:image/png;base64,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" alt="GO Transit" height="36" style="display:block;">
     </div>
     <div class="footer-content">
       <div class="footer-text">

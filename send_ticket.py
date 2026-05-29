@@ -89,6 +89,7 @@ def build_email_html(valid_from: datetime, valid_to: datetime, order_number: str
     html = html.replace("{VALID_FROM}", fmt_validity(valid_from))
     html = html.replace("{VALID_TO}", fmt_validity(valid_to))
     html = html.replace("{TICKET_URL}", TICKET_URL)
+    html = html.replace("{TICKET_NUMBER}", ticket_number)
     html = html.replace("MZ66801593", ticket_number)
     html = html.replace("Union Station GO to Bronte GO", ROUTE)
     return html
