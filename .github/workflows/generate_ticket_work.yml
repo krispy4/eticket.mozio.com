@@ -1,0 +1,39 @@
+name: Generate GO Transit Ticket (Work)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Generate ticket and email
+        env:
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          ROUTE: "Bronte GO to Union Station GO"
+          INCREMENT: "5000"
+        run: python3 send_ticket.py
+
+      - name: Commit updated state and ticket page
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add index.html ticket_state.json
+          git commit -m "Work ticket - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes"
+          git push
