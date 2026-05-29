@@ -1,4 +1,4 @@
-name: Generate GO Transit Ticket
+name: Generate GO Transit Ticket (Work)
 
 on:
   workflow_dispatch:
@@ -26,8 +26,8 @@ jobs:
         env:
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
-          ROUTE: "Union Station GO to Bronte GO"
-          INCREMENT: "300"
+          ROUTE: "Bronte GO to Union Station GO"
+          INCREMENT: "5000"
         run: python3 send_ticket.py
 
       - name: Commit updated state and ticket page
@@ -35,5 +35,5 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
           git add index.html ticket_state.json
-          git commit -m "Regular ticket - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes"
+          git commit -m "Work ticket - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes"
           git push
