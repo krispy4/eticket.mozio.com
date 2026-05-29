@@ -18,6 +18,8 @@ GITHUB_USER    = "krispy4"
 GITHUB_REPO    = "eticket.mozio.com"
 TICKET_URL     = f"https://{GITHUB_USER}.github.io/{GITHUB_REPO}/"
 RECIPIENT      = "tade.adebajo@gmail.com"
+ROUTE          = os.environ.get("ROUTE", "Union Station GO to Bronte GO")
+INCREMENT      = int(os.environ.get("INCREMENT", "300"))
 
 GMAIL_ADDRESS  = os.environ.get("GMAIL_ADDRESS", "tade.adebajo@gmail.com")
 GMAIL_APP_PASS = os.environ.get("GMAIL_APP_PASS", "")
@@ -84,21 +86,22 @@ def main():
     now      = datetime.now()
     valid_to = now + timedelta(days=7)
     order_no = f"{fmt_order_date(now)}-{random_suffix(8)}"
+    ticket_no = gen_ticket_number(INCREMENT)
 
     print(f"\n🚆 GO Transit Ticket Generator")
-    print(f"   Route:      Union Station GO → Bronte GO")
+    print(f"   Route:      {ROUTE}")
     print(f"   Valid:      {fmt_validity(now)} → {fmt_validity(valid_to)}")
     print(f"   Order #:    {order_no}")
     print(f"   Ticket URL: {TICKET_URL}\n")
 
     # Write index.html locally — GitHub Actions will git push it
-    ticket_html = build_ticket_html(activation_time=now)
+    ticket_html = build_ticket_html(activation_time=now, ticket_number=ticket_no)
     output_path = Path(__file__).parent / "index.html"
     output_path.write_text(ticket_html, encoding="utf-8")
     print(f"✓ index.html written")
 
     # Send email
-    email_html = build_email_html(valid_from=now, valid_to=valid_to, order_number=order_no)
+    email_html = build_email_html(valid_from=now, valid_to=valid_to, order_number=order_no, ticket_number=ticket_no)
     send_email(email_html, order_number=order_no)
 
 if __name__ == "__main__":
