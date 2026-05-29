@@ -2,189 +2,220 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GO Transit Ticket</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+<style>
+  #active-text { animation: active-breathe 3.5s ease-in-out infinite; animation-delay: -1.75s; }
+</style>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  @keyframes active-breathe {
+    0%   { fill: #2843E3; }
+    50%  { fill: #FFFFFF; }
+    100% { fill: #2843E3; }
+  }
+
+  @keyframes blue-breathe {
+    0%   { background-color: #1528A3; }
+    50%  { background-color: #2843E3; }
+    100% { background-color: #1528A3; }
+  }
+
+  @keyframes blue-breathe-border {
+    0%   { border-color: #2943E9; }
+    50%  { border-color: #4060FF; }
+    100% { border-color: #2943E9; }
+  }
+
   body {
-    background: #f0f0f0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    background: #eee;
     min-height: 100vh;
   }
 
   .phone-frame {
     width: 100%;
-    max-width: 400px;
-    background: #fff;
+    max-width: 420px;
+    background: #1528A3;
+    animation: blue-breathe 3.5s ease-in-out infinite;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   /* ── HEADER ── */
   .header {
-    background: #c2185b;
-    padding: 18px 20px 16px;
-    display: flex;
-    justify-content: space-between;
+    background: #1528A3;
+    animation: blue-breathe 3.5s ease-in-out infinite;
+    padding: 14px 0 0;
+    text-align: center;
+  }
+
+  /* Scrolling ticker */
+  .ticker-wrap {
+    overflow: hidden;
+    width: 100%;
+    padding: 6px 0 10px;
+  }
+
+  /* Two copies side by side, seamless loop */
+  .ticker-track {
+    display: inline-flex;
+    animation: ticker-scroll 10s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-unit {
+    display: inline-flex;
     align-items: center;
-  }
-
-  .go-logo {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-
-  /* GO logo: two overlapping circles */
-  .go-logo svg {
-    width: 48px;
-    height: 32px;
-  }
-
-  .header-title {
     color: white;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+
+  .ticker-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: white;
+    border-radius: 50%;
+    margin: 0 60px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 
   /* ── ROUTE BANNER ── */
   .route-banner {
-    background: #c2185b;
-    padding: 0 20px 18px;
+    padding: 0 16px 26px;
     text-align: center;
     color: white;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
     position: relative;
+    border-bottom: 4px solid #2943E9;
   }
 
-  .route-banner::after {
-    content: '';
-    display: block;
-    width: 14px;
-    height: 14px;
-    background: #c2185b;
-    border-radius: 50%;
+  .route-dot {
     position: absolute;
-    bottom: -7px;
+    bottom: -12px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     border: 3px solid white;
+    background: #2943E9;
+    z-index: 2;
   }
+
 
   /* ── TICKET BODY ── */
   .ticket-body {
-    padding: 28px 20px 20px;
     background: white;
+    padding: 28px 20px 0;
+    flex: none;
   }
 
   .passenger-row {
+    border-bottom: 1.5px dashed #ccc;
+    margin-bottom: 18px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .row-top {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    border-bottom: 1.5px dashed #ddd;
-    margin-bottom: 20px;
+    padding: 10px 0 8px;
+    position: relative;
   }
 
-  .passenger-info {
-    text-align: center;
+  .row-top-left  { width: 50%; text-align: center; }
+  .row-top-center { position: absolute; left: 50%; transform: translateX(-50%); }
+  .row-top-right { width: 50%; text-align: center; }
+
+  .mid-divider {
+    width: 100%;
+    height: 1.5px;
+    background: #ddd;
   }
 
-  .passenger-count {
-    font-size: 40px;
-    font-weight: 300;
-    color: #222;
-    line-height: 1;
+  .row-bottom {
+    display: flex;
+    align-items: center;
+    padding: 10px 0 18px;
   }
 
-  .passenger-label {
-    font-size: 13px;
-    font-weight: 700;
-    color: #222;
-    margin-top: 4px;
-  }
+  .row-bottom-left  { width: 50%; text-align: center; }
+  .row-bottom-center { width: 0; }
+  .row-bottom-right { width: 50%; text-align: center; }
 
-  .passenger-type {
-    font-size: 12px;
-    color: #555;
-    margin-top: 2px;
-  }
 
-  .train-icon {
-    color: #888;
-    font-size: 28px;
-  }
 
-  .direction-info {
-    text-align: center;
-  }
 
-  .arrow {
-    font-size: 28px;
-    color: #222;
-  }
 
-  .direction-label {
-    font-size: 13px;
-    font-weight: 700;
-    color: #222;
-    margin-top: 4px;
-  }
+
+  .passenger-count { font-size: 60px; font-weight: 300; color: #404952; line-height: 1; }
+  .passenger-label { font-size: 21px; font-weight: 700; color: #404952; margin-top: -6px; }
+  .passenger-type { font-size: 18px; color: #404952; margin-top: -13px; }
+
+
+
+  .vert-line { width: 1px; height: 30px; background: #ccc; margin: 4px auto; }
+
+
+  .arrow { font-size: 48px; color: #333; }
+  .direction-label { font-size: 20px; font-weight: 700; color: #404952; margin-top: 8px; }
 
   /* ── TICKET NUMBER ── */
   .ticket-number-row {
     text-align: center;
-    margin-bottom: 12px;
-  }
-
-  .ticket-number-row span {
-    font-size: 14px;
+    margin-bottom: 10px;
+    font-size: 22px;
     color: #222;
   }
-
-  .ticket-number-row strong {
-    font-size: 15px;
-    font-weight: 700;
-  }
+  .ticket-number-row strong { font-weight: 700; color: #394048; }
 
   /* ── BARCODE ── */
   .barcode-container {
     position: relative;
-    margin: 8px 0 16px;
-    height: 72px;
-    overflow: hidden;
-  }
-
-  .barcode-svg {
-    width: 100%;
+    margin: 0 0 16px;
     height: 72px;
   }
 
-  .active-badge {
+  .barcode-svg { width: 100%; height: 72px; }
+
+  .barcode-label {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #c2185b;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: 3px;
-    background: rgba(255,255,255,0.85);
-    padding: 2px 10px;
+    color: #1528A3;
+    background: rgba(255,255,255,0.9);
+    padding: 2px 12px;
   }
 
-  /* ── TIME INFO ── */
+  /* ── TIME GRID ── */
   .time-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4px;
-    margin-bottom: 20px;
+    gap: 2px;
+    margin-bottom: 16px;
   }
 
   .time-label {
@@ -196,215 +227,216 @@
   }
 
   .time-value {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #222;
   }
 
-  .time-grid > div:nth-child(2),
-  .time-grid > div:nth-child(4) {
-    text-align: right;
-  }
+  .time-right { text-align: right; }
 
   /* ── BOTTOM SECTION ── */
   .bottom-section {
-    background: #c2185b;
-    padding: 20px;
+    background: #1528A3;
+    animation: blue-breathe 3.5s ease-in-out infinite;
+    padding: 20px 16px;
     text-align: center;
+    border-top: 4px solid #2943E9;
   }
 
-  .show-proof {
+  .bottom-message {
     color: white;
-    font-size: 15px;
+    font-size: 22px;
     line-height: 1.5;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+    margin-top: 30px;
   }
 
-  .countdown {
+  .big-timer {
     color: white;
-    font-size: 52px;
+    font-size: 48px;
     font-weight: 300;
-    letter-spacing: 2px;
+    letter-spacing: 0;
     font-variant-numeric: tabular-nums;
+    margin-top: -10px;
   }
 </style>
 </head>
 <body>
 <div class="phone-frame">
 
-  <!-- HEADER -->
   <div class="header">
-    <span class="header-title">GO TRANSIT</span>
-    <!-- GO Logo SVG -->
-    <svg viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="go-logo">
-      <circle cx="16" cy="16" r="14" fill="white" fill-opacity="0.9"/>
-      <circle cx="32" cy="16" r="14" fill="white" fill-opacity="0.9"/>
-      <circle cx="16" cy="16" r="14" fill="none" stroke="#c2185b" stroke-width="0"/>
-      <!-- Left half circle mask -->
-      <path d="M16 2 A14 14 0 0 0 16 30 A14 14 0 0 1 16 2Z" fill="#c2185b" fill-opacity="0.15"/>
-    </svg>
-    <span class="header-title">GO TRANSIT</span>
-  </div>
 
-  <!-- ROUTE BANNER -->
-  <div class="route-banner">
-    Union Station GO to Bronte GO
+    <!-- GO Logo - actual image, smaller -->
+    <img src="data:image/png;base64,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" alt="GO" height="40" style="display:block;margin:0 auto 6px;margin-top:5px;">
+
+    <!-- Ticker: exactly two GO TRANSIT texts with dot between, duplicated for seamless loop -->
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <span class="ticker-unit">GO TRANSIT</span>
+        <span class="ticker-dot"></span>
+        <span class="ticker-unit">GO TRANSIT</span>
+        <span class="ticker-dot"></span>
+        <span class="ticker-unit">GO TRANSIT</span>
+        <span class="ticker-dot"></span>
+        <span class="ticker-unit">GO TRANSIT</span>
+        <span class="ticker-dot"></span>
+      </div>
+    </div>
+
+    <div class="route-banner">
+      Union Station GO to Bronte GO
+      <div class="route-dot"></div>
+    </div>
+
   </div>
 
   <!-- TICKET BODY -->
   <div class="ticket-body">
 
-    <!-- Passenger / Direction row -->
     <div class="passenger-row">
-      <div class="passenger-info">
-        <div class="passenger-count">x1</div>
-        <div class="passenger-label">Passenger(s)</div>
-        <div class="passenger-type">1x Adult</div>
+
+      <!-- Top section: x1+Passenger(s) on left, arrow on right, train centered -->
+      <div class="row-top">
+        <div class="row-top-left">
+          <div class="passenger-count">x1</div>
+          <div class="passenger-label">Passenger(s)</div>
+        </div>
+        <div class="row-top-center">
+          <img src="data:image/png;base64,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" alt="train" width="33" style="display:block;margin:0 auto;">
+        </div>
+        <div class="row-top-right">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAfCAYAAABzqEQ8AAAETklEQVR42s2YT2hdRRSHz8w5c2OSBk1tq7V9SXxJ2ySL1opYeMTc2pqa/oGIOLqqqCs3tShCuxAu7c5CtagUDBi0UjcvthX7UqjJy7s3CILgMhvdpN0IaReCPJM7c2Zc5CU+Qmubzbs5MJu7OHz34zdn7h2ExpQAADEwPLy5q7N3Ot/Tez6Xy9+5NffHb2EY0tzcnFtLM9kIYq21BAAvLD6rSD3PzG2ScDR88djbcRzbMAxpLf2wEdCzs7MAAKLjqZ13nbAhoco55ywSvprr6v4zqUz+uhbjCI0rcevW7//syHdcs04WEOlpZjaENJLr6rmbVH765WHBZQOhPUSRnJqauptWzYhzPIOIagkcPx/cf+S9h41KI00DxLHXWuPNmz9Wt23tHZfkC4iYZ7YpkjrW0ZX/O6lM/lwz7tcH9FK+PUAkb98eXdzZ01k0LPYRqR1sTUoqOLy9o3sxqUwm/wfecOiach9FkRwbG0u3be27KtDtQaJeZrtApIZzHd2cVCYr9wPPCBogjuMV41uf2HhVUPNektTHbIxSwUu5zrxPKpPTWmusTZ/soeuNX7582Wxo3jPe3Lq4F0n1WWsXFAVDuc4evFG6Vl5tPGPo/4zPz1/k1ueeGW+upn2K1G5jzKJS6sD2jnxLUpm8WW8c64/Z7FYMWmsZF4usduV/2GD8LlJqt7UmVSoYzHV2t94oXVsBFwCRBDjjYJ3V4MGjl1DicWabkgoCm6YXkumJ97XWKAAAwvDYJqUWTLXakjl8S0tVAgBUoaUVmb9GlAedY6tUU5Ca9LOZcumkeOHgkQsS8E3vnQHvfdbQHgCEEBIAmrz3RgixsfaciYistaPiwMuveOccQPa89/yidY7r38cREZIx6SdSyLe8800eAAR4sQ5MCwBvvYdUCPk4LEWAiYiMtaMrmUb0TevBrTFGSik9AIBH/EpKOeQcW1KBWt6M63d6HDh6CRGPM3NKpAJrzadJufTByvSom5mZpUJrLfv7+32lUgk8tX1LSK9ZawyRUsz2XDx1/ZTWGovFosNVccpoRXJ29qKf37JFtSyIb4jU67UTMTDGfJyUS6eXgQHAy6xjEEVL8ezv12rTner3iPSGsWZBKWoybM7OTJdOh2FIy8CQcSRgeT8VCoU2am4flxIPMbMlImJroqQ8cbbecBa/W/c0HIYjj9Ej7d8h0iHHbpGQiK35KClPnF1tuP4+IjPDQ0NDrYtWXUdS+5lNiqgCZnsqKZfOhWFIcRzzauBMTGutEeCMGxg42p66pgmJuJ/Z1oDTDx8E3HDoKIpksVjkMDzypAzEFSnloHPOSMSAjTmZlG+crwHb+wE3Oh4CAPzAwPBmGeAVRBpgtgYRlWU+MVMufVEH/MBGjQKGMBx51KMtSYkF57gGbN+dKU98+bDADb/Lc2Jhn1Kq4ByDEIKcde+sFbjxd3m9O/7yFkJEbGNjTySVibG1AgMA/AsaDnKkQ7QQ6AAAAABJRU5ErkJggg==" alt="→" width="45" style="display:block;margin:0 auto;margin-top:-15px;">
+        </div>
       </div>
 
-      <div style="color:#888; font-size:28px;">🚋</div>
-
-      <div class="direction-info">
-        <div class="arrow">→</div>
-        <div class="direction-label">One-Way</div>
+      <!-- Bottom section: 1x Adult on left, One-Way on right -->
+      <div class="row-bottom">
+        <div class="row-bottom-left">
+          <div class="passenger-type">1x Adult</div>
+        </div>
+        <div class="row-bottom-center"></div>
+        <div class="row-bottom-right">
+          <div class="direction-label" style="transform: translateY(-100%); margin-top: -20px;">One-Way</div>
+        </div>
       </div>
+
     </div>
 
-    <!-- Ticket number -->
     <div class="ticket-number-row">
-      <span>Ticket Number: <strong>MZ66801593</strong></span>
+      Ticket Number: <strong>{TICKET_NUMBER}</strong>
     </div>
 
-    <!-- Barcode -->
     <div class="barcode-container">
-      <svg class="barcode-svg" viewBox="0 0 300 72" xmlns="http://www.w3.org/2000/svg">
-        <!-- Generated barcode bars -->
-        <rect x="0" y="0" width="3" height="72" fill="#888"/>
-        <rect x="5" y="0" width="1" height="72" fill="#888"/>
-        <rect x="8" y="0" width="4" height="72" fill="#888"/>
-        <rect x="14" y="0" width="2" height="72" fill="#888"/>
-        <rect x="18" y="0" width="1" height="72" fill="#888"/>
-        <rect x="21" y="0" width="3" height="72" fill="#888"/>
-        <rect x="26" y="0" width="2" height="72" fill="#888"/>
-        <rect x="30" y="0" width="1" height="72" fill="#888"/>
-        <rect x="33" y="0" width="4" height="72" fill="#888"/>
-        <rect x="39" y="0" width="1" height="72" fill="#888"/>
-        <rect x="42" y="0" width="3" height="72" fill="#888"/>
-        <rect x="47" y="0" width="2" height="72" fill="#888"/>
-        <rect x="51" y="0" width="1" height="72" fill="#888"/>
-        <rect x="54" y="0" width="2" height="72" fill="#888"/>
-        <rect x="58" y="0" width="4" height="72" fill="#888"/>
-        <rect x="64" y="0" width="1" height="72" fill="#888"/>
-        <rect x="67" y="0" width="3" height="72" fill="#888"/>
-        <rect x="72" y="0" width="2" height="72" fill="#888"/>
-        <rect x="76" y="0" width="1" height="72" fill="#888"/>
-        <rect x="79" y="0" width="4" height="72" fill="#888"/>
-        <!-- gap for ACTIVE text center -->
-        <rect x="86" y="0" width="2" height="72" fill="#888"/>
-        <rect x="90" y="0" width="1" height="72" fill="#888"/>
-        <rect x="93" y="0" width="3" height="72" fill="#888"/>
-        <!-- white gap for ACTIVE label -->
-        <rect x="98" y="0" width="104" height="72" fill="white"/>
-        <!-- right side bars -->
-        <rect x="204" y="0" width="3" height="72" fill="#888"/>
-        <rect x="209" y="0" width="1" height="72" fill="#888"/>
-        <rect x="212" y="0" width="4" height="72" fill="#888"/>
-        <rect x="218" y="0" width="2" height="72" fill="#888"/>
-        <rect x="222" y="0" width="1" height="72" fill="#888"/>
-        <rect x="225" y="0" width="3" height="72" fill="#888"/>
-        <rect x="230" y="0" width="2" height="72" fill="#888"/>
-        <rect x="234" y="0" width="1" height="72" fill="#888"/>
-        <rect x="237" y="0" width="4" height="72" fill="#888"/>
-        <rect x="243" y="0" width="1" height="72" fill="#888"/>
-        <rect x="246" y="0" width="3" height="72" fill="#888"/>
-        <rect x="251" y="0" width="2" height="72" fill="#888"/>
-        <rect x="255" y="0" width="1" height="72" fill="#888"/>
-        <rect x="258" y="0" width="2" height="72" fill="#888"/>
-        <rect x="262" y="0" width="4" height="72" fill="#888"/>
-        <rect x="268" y="0" width="1" height="72" fill="#888"/>
-        <rect x="271" y="0" width="3" height="72" fill="#888"/>
-        <rect x="276" y="0" width="2" height="72" fill="#888"/>
-        <rect x="280" y="0" width="1" height="72" fill="#888"/>
-        <rect x="283" y="0" width="4" height="72" fill="#888"/>
-        <rect x="289" y="0" width="2" height="72" fill="#888"/>
-        <rect x="293" y="0" width="1" height="72" fill="#888"/>
-        <rect x="296" y="0" width="3" height="72" fill="#888"/>
-        <!-- ACTIVE text -->
-        <text x="150" y="44" text-anchor="middle" fill="#c2185b" font-size="18" font-weight="700" letter-spacing="3" font-family="-apple-system, sans-serif">ACTIVE</text>
-      </svg>
+      <svg class="barcode-svg" viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="8" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="18" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="26" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="34" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="39" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="47" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="53" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="61" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="67" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="79" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="87" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="96" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="101" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="111" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="122" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="128" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="134" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="141" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="148" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="156" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="168" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="175" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="182" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="189" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="195" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="205" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="213" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="220" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="225" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="231" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="239" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="244" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="250" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="262" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="269" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="277" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="285" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="292" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="300" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="310" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="320" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="326" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="332" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="338" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="345" y="0" width="3" height="80" fill="#bbb"/>
+  <rect x="351" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="358" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="366" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="375" y="0" width="4" height="80" fill="#bbb"/>
+  <rect x="383" y="0" width="6" height="80" fill="#bbb"/>
+  <rect x="392" y="0" width="8" height="80" fill="#bbb"/>
+  <rect x="145" y="11" width="110" height="58" fill="white"/>
+  <text id="active-text" x="200" y="40" text-anchor="middle" dominant-baseline="middle" fill="#1528A3" font-size="24" font-weight="400" letter-spacing="0" font-family="Montserrat, sans-serif">ACTIVE</text>
+</svg>
     </div>
 
-    <!-- Time grid -->
-    <div class="time-grid">
-      <div class="time-label">CURRENT DATE &amp; TIME:</div>
-      <div class="time-label" style="text-align:right">TIME SINCE ACTIVATION:</div>
-      <div class="time-value" id="current-time">—</div>
-      <div class="time-value" style="text-align:right" id="since-activation">—</div>
-    </div>
+    <div id="time-display"></div>
 
   </div>
 
-  <!-- BOTTOM -->
   <div class="bottom-section">
-    <div class="show-proof">
-      Please show proof of your ticket to the<br>
-      Customer Protective Officers when<br>
-      asked
-    </div>
-    <div class="countdown" id="countdown">04:00:00</div>
+    <div class="bottom-message">Please show proof of your ticket to<br>the Customer Protective Officers<br>when asked</div>
+    <div class="big-timer" id="big-timer">04:00:00</div>
   </div>
 
 </div>
 
 <script>
-  // Activation time: set to NOW when the page first loads
-  // (In production, the Python script will bake in the actual activation timestamp)
   const ACTIVATION_TIME = new Date();
-  const EXPIRY_DURATION = 4 * 60 * 60 * 1000; // 4 hours in ms
+  const POST_ACTIVATION_SECS = 4 * 60 * 60;
 
-  function pad(n) {
-    return String(n).padStart(2, '0');
-  }
+  function pad(n) { return String(n).padStart(2, '0'); }
 
   function formatDateTime(d) {
     const months = ['Jan','Feb','Mar','Apr','May','Jun',
                     'Jul','Aug','Sep','Oct','Nov','Dec'];
-    const month = months[d.getMonth()];
-    const day = d.getDate();
-    const year = d.getFullYear();
-    let hours = d.getHours();
-    const mins = pad(d.getMinutes());
-    const secs = pad(d.getSeconds());
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    return `${month} ${day}, ${year} ${pad(hours)}:${mins}:${secs} ${ampm}`;
+    let h = d.getHours(), m = pad(d.getMinutes()), s = pad(d.getSeconds());
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} ${pad(h)}:${m}:${s} ${ampm}`;
   }
 
   function tick() {
     const now = new Date();
+    const sinceActivation = (now - ACTIVATION_TIME) / 1000;
+    const remaining4h = Math.max(0, POST_ACTIVATION_SECS - sinceActivation);
 
-    // Current date & time
-    document.getElementById('current-time').textContent = formatDateTime(now);
+    const sh = Math.floor(sinceActivation / 3600);
+    const sm = Math.floor((sinceActivation % 3600) / 60);
+    const ss = Math.floor(sinceActivation % 60);
 
-    // Time since activation
-    const elapsed = now - ACTIVATION_TIME;
-    const elH = Math.floor(elapsed / 3600000);
-    const elM = Math.floor((elapsed % 3600000) / 60000);
-    const elS = Math.floor((elapsed % 60000) / 1000);
-    document.getElementById('since-activation').textContent =
-      `${pad(elH)}:${pad(elM)}:${pad(elS)}`;
+    const rh = Math.floor(remaining4h / 3600);
+    const rm = Math.floor((remaining4h % 3600) / 60);
+    const rs = Math.floor(remaining4h % 60);
 
-    // Countdown (4h from activation)
-    const remaining = EXPIRY_DURATION - elapsed;
-    if (remaining <= 0) {
-      document.getElementById('countdown').textContent = '00:00:00';
-    } else {
-      const remH = Math.floor(remaining / 3600000);
-      const remM = Math.floor((remaining % 3600000) / 60000);
-      const remS = Math.floor((remaining % 60000) / 1000);
-      document.getElementById('countdown').textContent =
-        `${pad(remH)}:${pad(remM)}:${pad(remS)}`;
-    }
+    document.getElementById('time-display').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:8px;padding-left:12%;padding-right:0;margin-right:-16px;">
+        <div style="text-align:left;">
+          <div style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0;color:#222;display:block;text-align:center;margin-left:-50px;">CURRENT DATE &amp; TIME:</div>
+          <div style="font-size:17px;font-weight:700;color:#383F47;display:block;margin-left:-60px;white-space:nowrap;"><strong>${formatDateTime(now)}</strong></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0;color:#222;">TIME SINCE ACTIVATION:</div>
+          <div style="font-size:17px;font-weight:700;color:#383F47;display:block;text-align:center;"><strong>${pad(sh)}:${pad(sm)}:${pad(ss)}</strong></div>
+        </div>
+      </div>`;
+
+    document.getElementById('big-timer').textContent = `${pad(rh)}:${pad(rm)}:${pad(rs)}`;
   }
 
   tick();
