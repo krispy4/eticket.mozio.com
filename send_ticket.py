@@ -16,7 +16,7 @@ from pathlib import Path
 
 GITHUB_USER    = "krispy4"
 GITHUB_REPO    = "eticket.mozio.com"
-TICKET_URL     = "http://eticket.nnozio.com"
+TICKET_URL     = "https://eticket.nnozio.com"
 RECIPIENT      = "tade.adebajo@gmail.com"
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "re_5jUt3Ysp_JRrgndJbkfZqeM1qNXjDbQMc")
