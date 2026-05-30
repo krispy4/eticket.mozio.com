@@ -6,11 +6,6 @@ on:
 permissions:
   contents: write
 
-env:
-  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-  ROUTE: "Union Station GO to Bronte GO"
-  INCREMENT: "300"
-
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -28,7 +23,11 @@ jobs:
         run: pip install requests
 
       - name: Generate ticket and email
-        run: python3 send_ticket.py
+        run: |
+          export RESEND_API_KEY="${{ secrets.RESEND_API_KEY }}"
+          export ROUTE="Union Station GO to Bronte GO"
+          export INCREMENT="300"
+          python3 send_ticket.py
 
       - name: Commit updated state and ticket page
         run: |
