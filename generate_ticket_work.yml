@@ -19,13 +19,9 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
-        run: pip install requests
-
       - name: Generate ticket and email
         env:
-          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
-          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           ROUTE: "Bronte GO to Union Station GO"
           INCREMENT: "5000"
         run: python3 send_ticket.py

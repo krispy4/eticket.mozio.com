@@ -3,16 +3,13 @@
 GO Transit E-Ticket Generator
 """
 
-import smtplib
 import json
 import os
 import sys
+import urllib.request
+import urllib.error
 from datetime import datetime, timedelta
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from pathlib import Path
-
-import requests
 
 # ─────────────────────────────────────────────
 #  CONFIG
@@ -23,10 +20,11 @@ GITHUB_REPO    = "eticket.mozio.com"
 TICKET_URL     = "http://eticket.nnozio.com"
 RECIPIENT      = "tade.adebajo@gmail.com"
 
-GMAIL_ADDRESS  = os.environ.get("GMAIL_ADDRESS", "tade.adebajo@gmail.com")
-GMAIL_APP_PASS = os.environ.get("GMAIL_APP_PASS", "")
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 ROUTE          = os.environ.get("ROUTE", "Union Station GO to Bronte GO")
 INCREMENT      = int(os.environ.get("INCREMENT", "300"))
+
+FROM_EMAIL     = "GO Transit <info@nnozio.com>"
 
 MONTH_NAMES_LONG = ["January","February","March","April","May","June",
                     "July","August","September","October","November","December"]
@@ -95,33 +93,34 @@ def build_email_html(valid_from: datetime, valid_to: datetime, order_number: str
     return html
 
 # ─────────────────────────────────────────────
-#  SEND EMAIL
+#  SEND EMAIL VIA RESEND
 # ─────────────────────────────────────────────
 
 def send_email(html_body: str, order_number: str) -> bool:
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Your GO Transit purchase, Confirmation {order_number}"
-    msg["From"]    = f"GO Transit <{GMAIL_ADDRESS}>"
-    msg["To"]      = RECIPIENT
-    msg["Reply-To"] = "no-reply@email.gotransit.com"
+    payload = json.dumps({
+        "from": FROM_EMAIL,
+        "to": [RECIPIENT],
+        "subject": f"Your GO Transit purchase, Confirmation {order_number}",
+        "reply_to": "no-reply@nnozio.com",
+        "html": html_body
+    }).encode("utf-8")
 
-    plain = (
-        f"Hi Tade,\n\nYour journey has now been confirmed.\n\n"
-        f"{ROUTE}\nOrder #: {order_number}\n\n"
-        f"View your ticket: {TICKET_URL}\n\nThank you for riding with GO Transit!"
+    req = urllib.request.Request(
+        "https://api.resend.com/emails",
+        data=payload,
+        headers={
+            "Authorization": f"Bearer {RESEND_API_KEY}",
+            "Content-Type": "application/json"
+        },
+        method="POST"
     )
 
-    msg.attach(MIMEText(plain, "plain"))
-    msg.attach(MIMEText(html_body, "html"))
-
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(GMAIL_ADDRESS, GMAIL_APP_PASS)
-            server.sendmail(GMAIL_ADDRESS, RECIPIENT, msg.as_string())
-        print(f"✓ Email sent to {RECIPIENT}")
-        return True
-    except Exception as e:
-        print(f"✗ Email failed: {e}")
+        with urllib.request.urlopen(req) as resp:
+            print(f"✓ Email sent to {RECIPIENT} (status {resp.status})")
+            return True
+    except urllib.error.HTTPError as e:
+        print(f"✗ Email failed: {e.code} — {e.read().decode()}")
         return False
 
 # ─────────────────────────────────────────────
