@@ -24,7 +24,7 @@
 
   /* ── HEADER ── */
   .header {
-    background-color: #4e7520;
+    background-color: #6E8D33;
     padding: 18px 28px;
   }
 
@@ -224,8 +224,10 @@
   }
 
   .survey-btn {
-    background-color: #4e7520;
-    color: white;
+    color: white !important;
+    text-decoration: none;
+    background-color: #6E8D33;
+    color: white !important;
     text-decoration: none;
     padding: 10px 16px;
     border-radius: 4px;
@@ -341,7 +343,7 @@
 
   /* ── FOOTER ── */
   .footer {
-    background-color: #4e7520;
+    background-color: #6E8D33;
     padding: 28px 36px;
   }
 
@@ -393,7 +395,7 @@
 
   <!-- HEADER -->
   <div class="header">
-    <img src="https://krispy4.github.io/eticket.mozio.com/go_logo.png" alt="GO Transit" height="40" style="display:block;">
+    <img src="https://krispy4.github.io/eticket.mozio.com/go_logo.png" alt="GO Transit" height="20" style="display:block;">
   </div>
 
   <!-- MAIN CONTENT -->
@@ -411,32 +413,38 @@
 
     <div class="ticket-card">
       <div class="ticket-card-top">
-        <div class="ticket-card-header">
-          <span class="ticket-badge">TICKET</span>
-          <span class="adult-badge">ADULT (13-64)</span>
-        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td><span class="ticket-badge">TICKET</span></td>
+            <td align="right"><span class="adult-badge">ADULT (13-64)</span></td>
+          </tr>
+        </table>
         <div class="ticket-route">Union Station GO to Bronte GO</div>
         <div class="ticket-validity">Valid from {VALID_FROM} to {VALID_TO}</div>
         <div class="ticket-note">Tickets can be used up to 4 hours after you activate</div>
-        <div class="ticket-oneway-row">
-          <span>One Way</span>
-          <span class="qty">x1</span>
-        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #eee;margin-top:10px;">
+          <tr>
+            <td style="padding-top:10px;font-size:14px;color:#222;">One Way</td>
+            <td align="right" style="padding-top:10px;font-size:14px;font-weight:700;color:#222;">x1</td>
+          </tr>
+        </table>
       </div>
-      <div class="ticket-card-bottom">
-        <span class="ticket-number">{TICKET_NUMBER}</span>
-        <a href="{TICKET_URL}" class="view-btn">View</a>
-      </div>
+      <table width="100%" cellpadding="12" cellspacing="0" border="0" style="border-top:1px solid #eee;">
+        <tr>
+          <td style="font-size:14px;font-weight:700;color:#1a1a1a;">{TICKET_NUMBER}</td>
+          <td align="right"><a href="{TICKET_URL}" style="background-color:#6E8D33;color:white !important;text-decoration:none;padding:8px 20px;border-radius:4px;font-size:14px;font-weight:400;display:inline-block;"><span style="color:white !important;">View</span></a></td>
+        </tr>
+      </table>
     </div>
 
     <!-- Survey callout -->
     <div class="survey-box">
-      <div class="survey-icon">👤</div>
+      <div class="survey-icon"><img src="data:image/png;base64,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" alt="" height="18" style="display:block;"></div>
       <div class="survey-text">
         <strong>We love to hear from you!</strong>
         <p>We value your feedback! Let us know your thoughts on our new ticketing experience by taking a survey.</p>
       </div>
-      <a href="#" class="survey-btn">Take a Survey</a>
+      <a href="#" class="survey-btn" style="color:white !important;text-decoration:none;"><span style="color:white !important;">Take a Survey</span></a>
     </div>
 
     <!-- Receipt -->
@@ -484,7 +492,7 @@
   <div class="footer">
     <!-- GO Logo white -->
     <div class="footer-logo">
-      <img src="https://krispy4.github.io/eticket.mozio.com/go_logo.png" alt="GO Transit" height="40" style="display:block;">
+      <img src="https://krispy4.github.io/eticket.mozio.com/go_logo.png" alt="GO Transit" height="20" style="display:block;">
     </div>
     <div class="footer-content">
       <div class="footer-text">
