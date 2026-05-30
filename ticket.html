@@ -31,15 +31,16 @@
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    display: flex;
-    justify-content: center;
-    background: #eee;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background: white;
     min-height: 100vh;
   }
 
   .phone-frame {
     width: 100%;
-    max-width: 420px;
     background: #1528A3;
     animation: blue-breathe 3.5s ease-in-out infinite;
     min-height: 100vh;
@@ -238,9 +239,16 @@
   .bottom-section {
     background: #1528A3;
     animation: blue-breathe 3.5s ease-in-out infinite;
-    padding: 20px 16px;
+    padding: 20px 16px 45px;
     text-align: center;
     border-top: 4px solid #2943E9;
+    border-bottom: 4px solid #2943E9;
+    flex: none;
+  }
+
+  .white-footer {
+    background: white;
+    flex: 1;
   }
 
   .bottom-message {
@@ -248,7 +256,7 @@
     font-size: 22px;
     line-height: 1.5;
     margin-bottom: 14px;
-    margin-top: 30px;
+    margin-top: 55px;
   }
 
   .big-timer {
@@ -380,7 +388,7 @@
   <rect x="375" y="0" width="4" height="80" fill="#bbb"/>
   <rect x="383" y="0" width="6" height="80" fill="#bbb"/>
   <rect x="392" y="0" width="8" height="80" fill="#bbb"/>
-  <rect x="145" y="11" width="110" height="58" fill="white"/>
+  <rect x="131" y="11" width="138" height="58" fill="white"/>
   <text id="active-text" x="200" y="40" text-anchor="middle" dominant-baseline="middle" fill="#1528A3" font-size="24" font-weight="400" letter-spacing="0" font-family="Montserrat, sans-serif">ACTIVE</text>
 </svg>
     </div>
@@ -394,11 +402,21 @@
     <div class="big-timer" id="big-timer">04:00:00</div>
   </div>
 
+  <div class="white-footer"></div>
+
 </div>
 
 <script>
-  const ACTIVATION_TIME = new Date();
   const POST_ACTIVATION_SECS = 4 * 60 * 60;
+
+  // Lock activation time on first open, persist across refreshes
+  const TICKET_KEY = "go_activation_{TICKET_NUMBER}";
+  let storedTime = localStorage.getItem(TICKET_KEY);
+  if (!storedTime) {
+    storedTime = new Date().toISOString();
+    localStorage.setItem(TICKET_KEY, storedTime);
+  }
+  const ACTIVATION_TIME = new Date(storedTime);
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
