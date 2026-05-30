@@ -96,6 +96,7 @@ def build_email_html(valid_from: datetime, valid_to: datetime, order_number: str
 # ─────────────────────────────────────────────
 
 def send_email(html_body: str, order_number: str) -> bool:
+    print(f"DEBUG: API key length = {len(RESEND_API_KEY)}, first 6 = {RESEND_API_KEY[:6]}")
     try:
         resp = requests.post(
             "https://api.resend.com/emails",
