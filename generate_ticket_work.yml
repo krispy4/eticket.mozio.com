@@ -6,11 +6,6 @@ on:
 permissions:
   contents: write
 
-env:
-  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-  ROUTE: "Bronte GO to Union Station GO"
-  INCREMENT: "5000"
-
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -28,12 +23,18 @@ jobs:
         run: pip install requests
 
       - name: Generate ticket and email
-        run: python3 send_ticket.py
+        run: |
+          export RESEND_API_KEY="${{ secrets.RESEND_API_KEY }}"
+          export ROUTE="Bronte GO to Union Station GO"
+          export INCREMENT="5000"
+          export OUTPUT_FILE="work.html"
+          export TICKET_URL="https://eticket.nnozio.com/work.html"
+          python3 send_ticket.py
 
       - name: Commit updated state and ticket page
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          git add index.html ticket_state.json
+          git add work.html ticket_state.json
           git commit -m "Work ticket - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes"
           git push

@@ -27,6 +27,8 @@ jobs:
           export RESEND_API_KEY="${{ secrets.RESEND_API_KEY }}"
           export ROUTE="Union Station GO to Bronte GO"
           export INCREMENT="300"
+          export OUTPUT_FILE="index.html"
+          export TICKET_URL="https://eticket.nnozio.com"
           python3 send_ticket.py
 
       - name: Commit updated state and ticket page

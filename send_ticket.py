@@ -16,10 +16,11 @@ from pathlib import Path
 
 GITHUB_USER    = "krispy4"
 GITHUB_REPO    = "eticket.mozio.com"
-TICKET_URL     = "https://eticket.nnozio.com"
+TICKET_URL     = os.environ.get("TICKET_URL", "https://eticket.nnozio.com")
 RECIPIENT      = "tade.adebajo@gmail.com"
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "re_5jUt3Ysp_JRrgndJbkfZqeM1qNXjDbQMc")
+OUTPUT_FILE    = os.environ.get("OUTPUT_FILE", "index.html")
 ROUTE          = os.environ.get("ROUTE", "Union Station GO to Bronte GO")
 INCREMENT      = int(os.environ.get("INCREMENT", "300"))
 
@@ -140,7 +141,7 @@ def main():
     print(f"   Ticket URL: {TICKET_URL}\n")
 
     ticket_html = build_ticket_html(activation_time=now, ticket_number=ticket_no)
-    output_path = Path(__file__).parent / "index.html"
+    output_path = Path(__file__).parent / OUTPUT_FILE
     output_path.write_text(ticket_html, encoding="utf-8")
     print(f"✓ index.html written")
 
