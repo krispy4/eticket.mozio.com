@@ -20,7 +20,7 @@ import requests
 
 GITHUB_USER    = "krispy4"
 GITHUB_REPO    = "eticket.mozio.com"
-TICKET_URL     = f"https://{GITHUB_USER}.github.io/{GITHUB_REPO}/"
+TICKET_URL     = "http://eticket.nnozio.com"
 RECIPIENT      = "tade.adebajo@gmail.com"
 
 GMAIL_ADDRESS  = os.environ.get("GMAIL_ADDRESS", "tade.adebajo@gmail.com")
