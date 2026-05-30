@@ -24,7 +24,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           ROUTE: "Union Station GO to Bronte GO"
           INCREMENT: "300"
-        run: python3 send_ticket.py
+        run: pip install requests && python3 send_ticket.py
 
       - name: Commit updated state and ticket page
         run: |

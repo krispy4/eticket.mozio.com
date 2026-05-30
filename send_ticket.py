@@ -6,8 +6,7 @@ GO Transit E-Ticket Generator
 import json
 import os
 import sys
-import urllib.request
-import urllib.error
+import requests
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -97,30 +96,29 @@ def build_email_html(valid_from: datetime, valid_to: datetime, order_number: str
 # ─────────────────────────────────────────────
 
 def send_email(html_body: str, order_number: str) -> bool:
-    payload = json.dumps({
-        "from": FROM_EMAIL,
-        "to": [RECIPIENT],
-        "subject": f"Your GO Transit purchase, Confirmation {order_number}",
-        "reply_to": "no-reply@nnozio.com",
-        "html": html_body
-    }).encode("utf-8")
-
-    req = urllib.request.Request(
-        "https://api.resend.com/emails",
-        data=payload,
-        headers={
-            "Authorization": f"Bearer {RESEND_API_KEY}",
-            "Content-Type": "application/json"
-        },
-        method="POST"
-    )
-
     try:
-        with urllib.request.urlopen(req) as resp:
-            print(f"✓ Email sent to {RECIPIENT} (status {resp.status})")
+        resp = requests.post(
+            "https://api.resend.com/emails",
+            headers={
+                "Authorization": f"Bearer {RESEND_API_KEY}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "from": FROM_EMAIL,
+                "to": [RECIPIENT],
+                "subject": f"Your GO Transit purchase, Confirmation {order_number}",
+                "reply_to": "no-reply@nnozio.com",
+                "html": html_body
+            }
+        )
+        if resp.status_code == 200 or resp.status_code == 201:
+            print(f"✓ Email sent to {RECIPIENT}")
             return True
-    except urllib.error.HTTPError as e:
-        print(f"✗ Email failed: {e.code} — {e.read().decode()}")
+        else:
+            print(f"✗ Email failed: {resp.status_code} — {resp.text}")
+            return False
+    except Exception as e:
+        print(f"✗ Email failed: {e}")
         return False
 
 # ─────────────────────────────────────────────
