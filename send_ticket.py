@@ -74,6 +74,7 @@ def build_ticket_html(activation_time: datetime, ticket_number: str) -> str:
     )
     html = html.replace("{TICKET_NUMBER}", ticket_number)
     html = html.replace("Union Station GO to Bronte GO", ROUTE)
+    html = html.replace("Bronte GO to Union Station GO", ROUTE)
     return html
 
 # ─────────────────────────────────────────────
@@ -90,6 +91,7 @@ def build_email_html(valid_from: datetime, valid_to: datetime, order_number: str
     html = html.replace("{TICKET_NUMBER}", ticket_number)
     html = html.replace("MZ66801593", ticket_number)
     html = html.replace("Union Station GO to Bronte GO", ROUTE)
+    html = html.replace("Bronte GO to Union Station GO", ROUTE)
     return html
 
 # ─────────────────────────────────────────────
