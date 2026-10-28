@@ -19,7 +19,7 @@ TICKET_URL_1   = "https://eticket.nnozio.com/work.html"
 TICKET_URL_2   = "https://eticket.nnozio.com/index.html"
 
 RECIPIENT      = "tade.adebajo@gmail.com"
-RESEND_API_KEY = "re_5jUt3Ysp_JRrgndJbkfZqeM1qNXjDbQMc"
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 ROUTE_1        = "Bronte GO to Union Station GO"
 ROUTE_2        = "Union Station GO to Bronte GO"
 INCREMENT      = 7549
