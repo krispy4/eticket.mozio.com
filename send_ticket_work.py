@@ -29,8 +29,9 @@ FROM_EMAIL     = "GO Transit <info@nnozio.com>"
 MONTH_NAMES_SHORT = ["Jan","Feb","Mar","Apr","May","Jun",
                      "Jul","Aug","Sep","Oct","Nov","Dec"]
 
-def fmt_validity(d):
-    return f"{MONTH_NAMES_SHORT[d.month-1]} {d.day:02d}"
+def fmt_validity(d, include_year=False):
+    base = f"{MONTH_NAMES_SHORT[d.month-1]} {d.day:02d}"
+    return f"{base}, {d.year}" if include_year else base
 
 def fmt_order_date(d):
     return d.strftime("%Y%m%d")
@@ -69,7 +70,7 @@ def build_email_html(valid_from, valid_to, order_number, ticket_number_1, ticket
     html = template_path.read_text(encoding="utf-8")
     html = html.replace("{ORDER_NUMBER}", order_number)
     html = html.replace("{VALID_FROM}", fmt_validity(valid_from))
-    html = html.replace("{VALID_TO}", fmt_validity(valid_to))
+    html = html.replace("{VALID_TO}", fmt_validity(valid_to, include_year=True))
     html = html.replace("{TICKET_URL_1}", TICKET_URL_1)
     html = html.replace("{TICKET_URL_2}", TICKET_URL_2)
     html = html.replace("{TICKET_NUMBER_1}", ticket_number_1)
@@ -96,7 +97,7 @@ def main():
     print(f"\n🚆 GO Transit Ticket Generator (Work — combined)")
     print(f"   Ticket 1:   {ticket_no_1}  ({ROUTE_1})")
     print(f"   Ticket 2:   {ticket_no_2}  ({ROUTE_2})")
-    print(f"   Valid:      {fmt_validity(now)} → {fmt_validity(valid_to)}")
+    print(f"   Valid:      {fmt_validity(now)} → {fmt_validity(valid_to, include_year=True)}")
     print(f"   Order #:    {order_no}\n")
 
     # Build and write the work ticket page (Bronte → Union Station)
