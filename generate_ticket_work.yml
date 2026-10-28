@@ -24,6 +24,8 @@ jobs:
 
       - name: Generate ticket and email
         run: python3 send_ticket_work.py
+        env:
+          RESEND_API_KEY: ${{ secrets._RESEND_API_KEY }}
 
       - name: Commit updated state and ticket page
         run: |
