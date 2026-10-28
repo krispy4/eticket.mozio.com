@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="x-apple-disable-message-reformatting">
 <title>Your GO Transit purchase, Confirmation {ORDER_NUMBER}</title>
 <style>
   body {
@@ -390,6 +391,14 @@
     font-size: 16px;
     color: white;
     text-decoration: none;
+  }
+  @media only screen and (max-width: 480px) {
+    .content { padding: 20px 16px 24px !important; }
+    .ticket-card-top { padding: 12px 12px 12px !important; }
+    .ticket-route { font-size: 14px !important; }
+    .adult-badge { font-size: 11px !important; padding: 3px 6px !important; }
+    .ticket-note { font-size: 12px !important; }
+    .ticket-validity { font-size: 12px !important; }
   }
 </style>
 </head>

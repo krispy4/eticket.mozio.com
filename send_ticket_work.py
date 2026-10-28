@@ -26,11 +26,11 @@ INCREMENT      = 7549
 OUTPUT_FILE    = "work.html"
 FROM_EMAIL     = "GO Transit <info@nnozio.com>"
 
-MONTH_NAMES_LONG = ["January","February","March","April","May","June",
-                    "July","August","September","October","November","December"]
+MONTH_NAMES_SHORT = ["Jan","Feb","Mar","Apr","May","Jun",
+                     "Jul","Aug","Sep","Oct","Nov","Dec"]
 
 def fmt_validity(d):
-    return f"{MONTH_NAMES_LONG[d.month-1]} {d.day}, {d.year}"
+    return f"{MONTH_NAMES_SHORT[d.month-1]} {d.day:02d}"
 
 def fmt_order_date(d):
     return d.strftime("%Y%m%d")
