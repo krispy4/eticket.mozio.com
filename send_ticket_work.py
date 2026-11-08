@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-GO Transit E-Ticket Generator - WORK (combined: Bronte GO ↔ Union Station GO)
-Generates two tickets per run: ticket_1 (Bronte→Union Station) and ticket_2 (ticket_1 + 1).
+GO Transit E-Ticket Generator - WORK (Bronte GO to Union Station GO)
 """
 
 import json
@@ -12,26 +11,19 @@ from pathlib import Path
 
 GITHUB_USER    = "krispy4"
 GITHUB_REPO    = "eticket.mozio.com"
-
-# Card 1: Bronte GO to Union Station GO  →  work.html
-TICKET_URL_1   = "https://eticket.nnozio.com/work.html"
-# Card 2: Union Station GO to Bronte GO  →  index.html
-TICKET_URL_2   = "https://eticket.nnozio.com/index.html"
-
+TICKET_URL     = "https://eticket.nnozio.com/work.html"
 RECIPIENT      = "tade.adebajo@gmail.com"
-RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
-ROUTE_1        = "Bronte GO to Union Station GO"
-ROUTE_2        = "Union Station GO to Bronte GO"
-INCREMENT      = 7549
+RESEND_API_KEY = "re_5jUt3Ysp_JRrgndJbkfZqeM1qNXjDbQMc"
+ROUTE          = "Bronte GO to Union Station GO"
+INCREMENT      = 5000
 OUTPUT_FILE    = "work.html"
 FROM_EMAIL     = "GO Transit <info@nnozio.com>"
 
-MONTH_NAMES_SHORT = ["Jan","Feb","Mar","Apr","May","Jun",
-                     "Jul","Aug","Sep","Oct","Nov","Dec"]
+MONTH_NAMES_LONG = ["January","February","March","April","May","June",
+                    "July","August","September","October","November","December"]
 
-def fmt_validity(d, include_year=False):
-    base = f"{MONTH_NAMES_SHORT[d.month-1]} {d.day:02d}"
-    return f"{base}, {d.year}" if include_year else base
+def fmt_validity(d):
+    return f"{MONTH_NAMES_LONG[d.month-1]} {d.day}, {d.year}"
 
 def fmt_order_date(d):
     return d.strftime("%Y%m%d")
@@ -40,41 +32,38 @@ def random_suffix(length=8):
     import random, string
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
-def gen_ticket_numbers(increment):
-    """Returns (ticket_number_1, ticket_number_2) where ticket_2 = ticket_1 + 1."""
+def gen_ticket_number(increment):
     state_path = Path(__file__).parent / "ticket_state.json"
     if state_path.exists():
         with open(state_path, "r") as f:
             state = json.load(f)
     else:
         state = {"last_ticket_number": 66801593}
-    ticket_1 = state["last_ticket_number"] + increment
-    ticket_2 = ticket_1 + 1
-    state["last_ticket_number"] = ticket_2  # next run starts after ticket_2
+    new_number = state["last_ticket_number"] + increment
+    state["last_ticket_number"] = new_number
     with open(state_path, "w") as f:
         json.dump(state, f, indent=2)
-    return f"MZ{ticket_1}", f"MZ{ticket_2}"
+    return f"MZ{new_number}"
 
-def build_ticket_html(activation_time, ticket_number, route):
+def build_ticket_html(activation_time, ticket_number):
     template_path = Path(__file__).parent / "ticket.html"
     html = template_path.read_text(encoding="utf-8")
     iso = activation_time.strftime("%Y-%m-%dT%H:%M:%S")
     html = html.replace("const ACTIVATION_TIME = new Date();", f'const ACTIVATION_TIME = new Date("{iso}");')
     html = html.replace("{TICKET_NUMBER}", ticket_number)
-    html = html.replace("Union Station GO to Bronte GO", route)
-    html = html.replace("Bronte GO to Union Station GO", route)
+    html = html.replace("Union Station GO to Bronte GO", ROUTE)
     return html
 
-def build_email_html(valid_from, valid_to, order_number, ticket_number_1, ticket_number_2):
+def build_email_html(valid_from, valid_to, order_number, ticket_number):
     template_path = Path(__file__).parent / "email_template.html"
     html = template_path.read_text(encoding="utf-8")
     html = html.replace("{ORDER_NUMBER}", order_number)
     html = html.replace("{VALID_FROM}", fmt_validity(valid_from))
-    html = html.replace("{VALID_TO}", fmt_validity(valid_to, include_year=True))
-    html = html.replace("{TICKET_URL_1}", TICKET_URL_1)
-    html = html.replace("{TICKET_URL_2}", TICKET_URL_2)
-    html = html.replace("{TICKET_NUMBER_1}", ticket_number_1)
-    html = html.replace("{TICKET_NUMBER_2}", ticket_number_2)
+    html = html.replace("{VALID_TO}", fmt_validity(valid_to))
+    html = html.replace("{TICKET_URL}", TICKET_URL)
+    html = html.replace("{TICKET_NUMBER}", ticket_number)
+    html = html.replace("MZ66801593", ticket_number)
+    html = html.replace("Union Station GO to Bronte GO", ROUTE)
     return html
 
 def send_email(html_body, order_number):
@@ -92,24 +81,19 @@ def main():
     now      = datetime.now()
     valid_to = now + timedelta(days=7)
     order_no = f"{fmt_order_date(now)}-{random_suffix(8)}"
-    ticket_no_1, ticket_no_2 = gen_ticket_numbers(INCREMENT)
+    ticket_no = gen_ticket_number(INCREMENT)
 
-    print(f"\n🚆 GO Transit Ticket Generator (Work — combined)")
-    print(f"   Ticket 1:   {ticket_no_1}  ({ROUTE_1})")
-    print(f"   Ticket 2:   {ticket_no_2}  ({ROUTE_2})")
-    print(f"   Valid:      {fmt_validity(now)} → {fmt_validity(valid_to, include_year=True)}")
-    print(f"   Order #:    {order_no}\n")
+    print(f"\n🚆 GO Transit Ticket Generator (Work)")
+    print(f"   Route:      {ROUTE}")
+    print(f"   Ticket #:   {ticket_no}")
+    print(f"   Ticket URL: {TICKET_URL}\n")
 
-    # Build and write the work ticket page (Bronte → Union Station)
-    ticket_html = build_ticket_html(activation_time=now, ticket_number=ticket_no_1, route=ROUTE_1)
+    ticket_html = build_ticket_html(activation_time=now, ticket_number=ticket_no)
     output_path = Path(__file__).parent / OUTPUT_FILE
     output_path.write_text(ticket_html, encoding="utf-8")
-    print(f"✓ {OUTPUT_FILE} written ({ticket_no_1})")
+    print(f"✓ {OUTPUT_FILE} written")
 
-    email_html = build_email_html(
-        valid_from=now, valid_to=valid_to, order_number=order_no,
-        ticket_number_1=ticket_no_1, ticket_number_2=ticket_no_2
-    )
+    email_html = build_email_html(valid_from=now, valid_to=valid_to, order_number=order_no, ticket_number=ticket_no)
     send_email(email_html, order_number=order_no)
 
 if __name__ == "__main__":
