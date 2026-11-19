@@ -19,7 +19,7 @@ GITHUB_REPO    = "eticket.mozio.com"
 TICKET_URL     = os.environ.get("TICKET_URL", "https://eticket.nnozio.com")
 RECIPIENT      = "tade.adebajo@gmail.com"
 
-RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "re_5jUt3Ysp_JRrgndJbkfZqeM1qNXjDbQMc")
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 OUTPUT_FILE    = os.environ.get("OUTPUT_FILE", "index.html")
 ROUTE          = os.environ.get("ROUTE", "Union Station GO to Bronte GO")
 INCREMENT      = int(os.environ.get("INCREMENT", "300"))
@@ -64,14 +64,10 @@ def gen_ticket_number(increment: int) -> str:
 #  BUILD TICKET HTML
 # ─────────────────────────────────────────────
 
-def build_ticket_html(activation_time: datetime, ticket_number: str) -> str:
+def build_ticket_html(ticket_number: str) -> str:
     template_path = Path(__file__).parent / "ticket.html"
     html = template_path.read_text(encoding="utf-8")
-    iso = activation_time.strftime("%Y-%m-%dT%H:%M:%S")
-    html = html.replace(
-        "const ACTIVATION_TIME = new Date();",
-        f'const ACTIVATION_TIME = new Date("{iso}");'
-    )
+    # Leave ACTIVATION_TIME as new Date() so timer starts when user opens the ticket
     html = html.replace("{TICKET_NUMBER}", ticket_number)
     html = html.replace("Union Station GO to Bronte GO", ROUTE)
     html = html.replace("Bronte GO to Union Station GO", ROUTE)
@@ -142,7 +138,7 @@ def main():
     print(f"   Ticket #:   {ticket_no}")
     print(f"   Ticket URL: {TICKET_URL}\n")
 
-    ticket_html = build_ticket_html(activation_time=now, ticket_number=ticket_no)
+    ticket_html = build_ticket_html(ticket_number=ticket_no)
     output_path = Path(__file__).parent / OUTPUT_FILE
     output_path.write_text(ticket_html, encoding="utf-8")
     print(f"✓ index.html written")
