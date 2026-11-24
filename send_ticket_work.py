@@ -60,7 +60,7 @@ def build_email_html(valid_from, valid_to, order_number, ticket_number):
     html = html.replace("{ORDER_NUMBER}", order_number)
     html = html.replace("{VALID_FROM}", fmt_validity(valid_from))
     html = html.replace("{VALID_TO}", fmt_validity(valid_to, include_year=True))
-    html = html.replace("{TICKET_URL}", TICKET_URL)
+    html = html.replace("{TICKET_URL}", f"{TICKET_URL}?v={order_number}")
     html = html.replace("{TICKET_NUMBER}", ticket_number)
     return html
 
